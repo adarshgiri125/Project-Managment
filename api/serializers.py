@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Tag , Task, Comment, Project
 from django.contrib.auth.models import User
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
@@ -23,12 +24,18 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     
-    asignee_username = serializers.ReadOnlyField(source = 'assignee.username', allow_null = True)
+    assignee_username = serializers.ReadOnlyField(source = 'assignee.username', allow_null = True)
     
-    tags = serializers.SlugRelatedField(many=True, slug_field='name', queryset = Tag.objects.all())
+    tags = serializers.SlugRelatedField(many=True, slug_field='name', queryset = Tag.objects.all(), required=False)
     class Meta:
         model = Task
-        fiels = ['id','title', 'description', 'status', 'priority', 'project', 'assignee', 'assignee_username', 'tags', 'created_at', 'updated_at' ]
+        fields = ['id','title', 'description', 'status', 'priority', 'project', 'assignee', 'assignee_username', 'tags', 'created_at', 'updated_at', 'assignee_username' ]
+
+        read_only_fields = ['project']
+        # Use extra_kwargs to specify that assignee is not required on write operations
+        extra_kwargs = {
+            'assignee': {'required': False, 'allow_null': True},
+        }
         
 class ProjectSerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)

@@ -32,9 +32,9 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     priority = models.IntegerField(default=0)
-    Project = models.ForeignKey(Project, related_name='tasks', on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, related_name='tasks', on_delete=models.CASCADE)
     assignee = models.ForeignKey(User,related_name='tasks', on_delete=models.SET_NULL, null=True, blank=True)
-    tag = models.ManyToManyField(Tag,related_name='tasks', blank = True)
+    tags = models.ManyToManyField(Tag,related_name='tasks', blank = True)
     status = models.CharField(max_length=20,choices=Status.choices, default=Status.TODO)
 
     class Meta:
