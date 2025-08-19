@@ -7,8 +7,8 @@ class Project(models.Model):
     title = models.CharField(max_length = 20)
     description = models.CharField(max_length = 100)
     created_at = models.DateTimeField(auto_now_add= True)
-    member = models.ManyToManyField(User,related_name='owned_projects')
-    owner = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)
+    member = models.ManyToManyField(User,related_name='projects')
+    owner = models.ForeignKey(User, related_name='owned_projcts', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
